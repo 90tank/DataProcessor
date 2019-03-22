@@ -1,6 +1,5 @@
 import com.jmatio.io.MatFileReader;
 import com.jmatio.types.*;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,7 +9,7 @@ public class TicketGUIController {
 
     public static void main(String[] args) throws IOException {
         MatFileReader read = new MatFileReader("/home/young/Run/000004.SZ.mat");
-        File file = new File("/home/young/Run/result.txt");
+        File file = new File("/home/young/ProjectYoung/MatFileReader/out/MatDataInfo.txt");
         if(!file.exists()){
             file.createNewFile();
         }
@@ -39,6 +38,7 @@ public class TicketGUIController {
                     StringBuilder sb = new StringBuilder();
                     for(int i=0;i<tmpFieldMlAry.getM();i++){
                           sb.append(mlCHar.getString(i)).append(",");
+                          break; //字符太多,后面的不打印
                     }
                     sb.append("\n");
                     buf.write(sb.toString().getBytes()); //windcode 打印较多 不便于观察
