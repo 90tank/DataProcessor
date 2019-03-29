@@ -157,6 +157,7 @@ public class MatColGetter {
             String time1300 = dateStr+"130000000";
             String time1500 = dateStr+"150000000";
             SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             long long930 = sf.parse(time0930).getTime();
             long long1130 = sf.parse(time1130).getTime();
@@ -164,17 +165,24 @@ public class MatColGetter {
             long long1500 = sf.parse(time1500).getTime();
 
             Date dateparse = sf.parse(dateTime);
+
             long thisTime = dateparse.getTime();
+            Date date2 = new Date(thisTime);
+
+            String newDateStr =  sf2.format(date2);
+            System.out.println("==zy==="+newDateStr);
+
             boolean flag = (thisTime>=long930&thisTime<=long1130)||(thisTime>=long1300 & thisTime<=long1500);
+
             if(!flag){
                 continue; //不在时间范围则丢弃本条记录
             }
 
             String priceStr = price[i][0]+"";
-            String volumeString = volume[i][0]+"";
+            String volumeString = volume[i][0]*100 + ""; //成交量 要求乘以100
 
-            //sb.append(dateTime).append("=").append(dateparse.getTime()).append(",").append(priceStr).append(",").append(volumeString);
-            sb.append(dateparse.getTime()).append(",").append(priceStr).append(",").append(volumeString);
+            //时间要除以1000 转换成秒值
+            sb.append(newDateStr).append(",").append(priceStr).append(",").append(volumeString);
             //bidPrice 取前五列
             for(int j=0;j<5;j++){
                //String bidPriceStr = bidPrice[i][j]+"";
@@ -199,10 +207,3 @@ public class MatColGetter {
         buf.close();
         }
     }
-
-
-
-
-
-
-
