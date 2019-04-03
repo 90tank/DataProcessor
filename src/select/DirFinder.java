@@ -19,7 +19,7 @@ public class DirFinder {
             }
             String tmpName = tmpStockFile.getName();
             if(tmpName.equalsIgnoreCase(stockName)){
-                return tmpStockFile; //找到则结束 每个年的文件夹中只有一个
+                return tmpStockFile; //找到则结束 每个年月的文件夹中只有一个
             }
         }
 
