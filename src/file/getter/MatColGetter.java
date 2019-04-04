@@ -181,10 +181,10 @@ public class MatColGetter {
             }
             //写入文件  换行
             buf.write((sb.toString()+"\n").getBytes());
+            buf.flush();
         }
 
         LOGGER.info("Complete Current StockPath "+aimStockPath);
-        buf.flush();
         buf.close();
         fos.close();
         }

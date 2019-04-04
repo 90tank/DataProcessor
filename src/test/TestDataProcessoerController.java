@@ -1,4 +1,5 @@
-import com.jmatio.io.MatFileReader;
+package test;
+
 import csv.tool.ReadByApachCsv;
 import file.getter.MatColGetter;
 import org.apache.logging.log4j.LogManager;
@@ -8,44 +9,53 @@ import select.DirFinder;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class DataProcessoerController {
-    private static Logger LOGGER = LogManager.getLogger(DataProcessoerController.class.getName());
+public class TestDataProcessoerController {
+    private static Logger LOGGER = LogManager.getLogger(TestDataProcessoerController.class.getName());
 
     public static void main(String[] args) throws IOException, ParseException {
 
         LOGGER.info("DataProcessor  开始运行");
 
+        String aiStock = "D:\\原始数据\\stock\\tickab201004\\000002.SZ.mat";
+        String outputPath = "D:\\原始数据\\OutPutTest";
         String stockPath = "D:\\原始数据\\stock";
-        String outputPath = "D:\\原始数据\\OutPut";
-//        String cspPath = "E:\\Run\\DataProcessor\\src\\stocklistA.csv";
+        DirFinder finder = new DirFinder();
         String cspPath = "E:\\Run\\DataProcessor\\src\\list.csv";
-
         List<String> stockNameList  = ReadByApachCsv.getStockList(cspPath);
+        String stockName = stockNameList.get(0)+".mat";
+        //LOGGER.info("stockName1 : "+stockName);
+        //LOGGER.info("stockName2 : "+"000001.SZ.mat");
+        //List<File> stockList = finder.findOneStockInAllYearsDir("D:\\原始数据\\stock",stockName);
 
-        for(int i=0;i<stockNameList.size();i++){
-            String aimStock = stockNameList.get(i)+".mat";
-            aimstockProcessor(stockPath,aimStock,outputPath);
+        //LOGGER.info("SIZE  : "+stockList.size());
+        //aimstockProcessor(stockPath,"000001.SZ.mat","D:\\原始数据\\OutPutTest");
+        //000001.SZ
+        //000001.SZ.mat
+        if(!"000001.SZ.mat".equalsIgnoreCase(stockName)){
+            LOGGER.error("File name not equale ");
         }
+        //aimstockProcessor(stockPath,stockName,"D:\\原始数据\\OutPutTest");
 
+        testoneAimstockProcessor(aiStock,outputPath);
 
         LOGGER.info("DataProcessor 运行结束");
     }
+
+
 
     public static void aimstockProcessor(String stockPath,String aimStock,String outputPath) throws IOException, ParseException {
         //输出文件
         //000001.SZ.mat
         String [] sp = aimStock.split("\\.");
-
-        String outfileName = sp[0]+"."+sp[1]+".csv";//合成文件名 两个点
-
+        String outfileName = sp[0]+sp[1]+".csv";
         String outfilePath =  outputPath + File.separator + outfileName;
         File outfile = new File(outfilePath);
         if(!outfile.exists()){
             outfile.createNewFile(); //不存在则创建 存在则追加
         }
+
         System.out.println("outfile :"+outfilePath);
         //开始合并一个文件
         DirFinder finder = new DirFinder();
@@ -56,6 +66,32 @@ public class DataProcessoerController {
             LOGGER.info("\ntmpStock "+tmpStock);
             MatColGetter.matReader(tmpStock,outfile);
         }
+    }
+
+
+
+
+    public static void testoneAimstockProcessor(String aimStock,String outputPath) throws IOException, ParseException {
+
+
+
+        File stock = new File(aimStock);
+        //输出文件
+
+        String [] sp = aimStock.split("\\.");
+        String outfileName ="201004_000002.SZ.csv";
+        String outfilePath =  outputPath + File.separator + outfileName;
+        File outfile = new File(outfilePath);
+
+        if(!outfile.exists()){
+            outfile.createNewFile(); //不存在则创建 存在则追加
+        }
+
+        System.out.println("outfile :"+outfilePath);
+
+        //开始合并一个文件
+        MatColGetter.matReader(stock,outfile);
+
     }
 
 
